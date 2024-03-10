@@ -1,0 +1,20 @@
+1. Update the excel files to only have one of the following colours, (red, pink, orange, yellow, green, blue, purple, gold, silver, black, gray, white, cream, brown or tan)
+
+2. Arrange the categories in this format (Men>Bags). Below is the list of categories and their supsequesnt divisions
+a. Women
+Accessories | Bags | Dresses | Intimates & Sleepwear | Jackets & Coats | Jeans | Jewelry | Makeup | Pants & Jumpsuits | Shoes | Shorts | Skirts | Sweaters | Swim | Tops | Skincare | Hair | Bath & Body | Global & Traditional Wear | Other
+b. Men
+Accessories | Bags | Jackets & Coats | Jeans | Pants | Shirts | Shoes | Shorts | Suits & Blazers | Sweaters | Swim | Underwear & Socks | Grooming | Global & Traditional Wear | Other
+c. Kids
+Accessories | Bottoms | Dresses | Jackets & Coats | Matching Sets | One Pieces | Pajamas | Shirts & Tops | Shoes | Swim | Costumes | Bath, Skin & Hair | Toys | Other
+d. Home
+Accents | Art | Bath | Bedding | Design | Dining | Games | Holiday | Kitchen | Office | Party Supplies | Storage & Organization | Wall Decor | Other
+e. Pets
+Dog | Cat | Bird | Fish | Reptile | Small Pets | Other
+f. Electronics
+Cameras, Photo & Video | Computers, Laptops & Parts | Cell Phones & Accessories | Car Audio, Video & GPS | Wearables | Tablets & Accessories | Video Games & Consoles | VR, AR & Accessories | Media | Networking | Headphones | Portable Audio & Video | Other
+
+3. Update last two columns of excel sheet to include category & status columns
+
+4. if you encounter a text stating 'solve captcha' on the terminal you solve the captcha and press enter to continue execution
+
