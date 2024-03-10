@@ -1,4 +1,4 @@
-**PoshmarkLister Readme**
+**Poshmark Lister Readme**
 
 ---
 
@@ -43,7 +43,11 @@ The PoshmarkLister script automates the process of listing items on Poshmark, a 
 
 1. **CSV File:** Prepare a CSV file containing item details, following the structure specified in the script's constants.
 
-2. **Run Script:**
+2. **Photo Storage:**
+   - Create a folder named `photos` in the script directory.
+   - Store images for each product in a subfolder named after the product within the `photos` folder.
+
+3. **Run Script:**
 
    ```bash
    # Navigate to script directory
@@ -55,12 +59,16 @@ The PoshmarkLister script automates the process of listing items on Poshmark, a 
 
    Make sure to update the `LISTING_PATH`, `ALLOW_MANUAL_PHOTO_ADJUST`, and `AUTO_RUN` variables in the script according to your needs.
 
-3. **Execution:**
+4. **Execution:**
 
    - The script will log into your Poshmark account.
    - It reads the CSV file to gather item details.
    - For each item, it creates a listing with the provided information, including photos.
    - The script then marks the listing status as "TRUE" in the CSV file to track completed items.
+
+5. **Review Before Uploading:**
+   - To review each product before uploading, set the `AUTO_RUN` variable to `True`.
+   - The script will pause before the final submission, allowing you to review each listing.
 
 ## Script Customization
 
