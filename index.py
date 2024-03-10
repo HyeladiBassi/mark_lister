@@ -97,8 +97,8 @@ class Lister:
 
     def _login_user(self):
         print("Logging in user...")
-        username = 'miaskulls@hotmail.com'
-        pw = 'Test2024'
+        username = ''
+        pw = ''
 
         wait = WebDriverWait(self.driver, 20)
         username_input = wait.until(ec.visibility_of_element_located((By.XPATH, self.LOGIN_NAME_INPUT_XPATH)))
