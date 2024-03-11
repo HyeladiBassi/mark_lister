@@ -414,6 +414,12 @@ class Lister:
         self._click_next_button()
 
         self._list_item()
+        
+        listing[self.LISTED_STATUS_INDEX] = 'TRUE'
+
+        with open(self.listing_csv_path, 'w', newline='', encoding='utf-8') as out_file:
+            csv_writer = csv.writer(out_file)
+            csv_writer.writerows(self.raw_listings)
 
         print("Item listed!")
 
@@ -433,12 +439,6 @@ class Lister:
                 self._visit_create_listing()
 
             #Change state of listing to 'listed'
-            listing[self.LISTED_STATUS_INDEX] = 'TRUE'
-
-        #Overwrite listings csv
-        with open(self.listing_csv_path, 'w', newline='', encoding='utf-8') as out_file:
-            csv_writer = csv.writer(out_file)
-            csv_writer.writerows(self.raw_listings)
         
         print('Listing complete!')
 
