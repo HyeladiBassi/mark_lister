@@ -1,0 +1,17 @@
+Steps to follow to use the Poshmark Lister
+
+1. Set your user name and password in lines 100 and 101 of the index.py file
+2. Open your terminal in the folder and activate the environment using "source venv/Scripts/activate"
+3. After activating the development environment you will run the script using "python index.py"
+4. From then on the driver would be initiated and a window would be open that displays the login page and enters the username and password
+5. Note that after trying to log you in a captcha challenge would be presented (you have 40 seconds to solve the challenge if you exceed the time limit a prompt "Solve captcha" would be displayed in the terminal to await your input, after solving the challenge just press enter after seeing the prompt in the terminal and the script would continue)
+6. After the login and captcha callenge the rest of would be automated and all you have to do is wait
+7. If you want to manually review each product before listing you can change the AUTO_RUN value to TRUE in line 455 of the index.py file
+8. When AUTO_RUN is set to TRUE you would be prompted to press enter after reviewing each product in the terminal
+
+NOTE: Please note that the following are required and cannot be skipped 
+1. Each item must have at least one image
+2. The image folder must have the same name as the product's SKU
+3. Each item must have a color
+4. The status of each item must be set to "FALSE" if it has not been entered already
+5. The category of each item must be set

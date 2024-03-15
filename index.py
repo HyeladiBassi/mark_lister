@@ -17,23 +17,26 @@ class Lister:
     POSHMARK_CREATE_LISTING_URL = "https://poshmark.com/create-listing"
     CATEGORY_DELIMITER = '>'
 
-    LISTING_ID_INDEX = 4
-    LISTING_TITLE_INDEX = 5
-    LISTING_DESCRIPTION_INDEX = 2
-    CATEGORY_PATH_INDEX = 21
-    LISTING_SIZE_INDEX = 11
-    NEW_W_TAGS_INDEX = 4
-    BRAND_INDEX = 3
-    COLOR_INDEX = 9
-    STYLE_TAGS_INDEX = 13
-    ORIGINAL_PRICE_INDEX = 2
-    NEW_LISTING_PRICE_INDEX = 2
-    MATERIAL_INDEX = 10
-    STYLE_INDEX = 13
-    CM_ADDL_SIZING_INFO_INDEX = 11
-    INCH_ADDL_SIZING_INFO_INDEX = 12
-    BASE_PHOTO_PATH_INDEX = 13
-    LISTED_STATUS_INDEX = 22
+    PRICE_INDEX = 0
+    LISTING_ID_INDEX = 1
+    BRAND_INDEX = 2
+    TITLE_INDEX = 3
+    COLOR_INDEX = 4
+    MATERIAL_INDEX = 5
+    DESC_TITLE_INDEX = 6
+    CM_ADDL_SIZING_INFO_INDEX = 7
+    INCH_ADDL_SIZING_INFO_INDEX = 8
+    ACCESSORY_INDEX = 9
+    SERIAL_NUMBER_INDEX = 10
+    EXTERIOR_INDEX = 11
+    INSIDE_INDEX = 12
+    POCKETS_INDEX = 13
+    CORNERS_INDEX = 14
+    POLICY_INDEX = 15
+    STYLE_INDEX = 16
+    CATEGORY_PATH_INDEX = 17
+    LISTED_STATUS_INDEX = 18
+    
 
     LOGIN_NAME_INPUT_XPATH = "//input[@name='login_form[username_email]']"
     LOGIN_PASSWORD_INPUT_XPATH = "//input[@name='login_form[password]']"
@@ -132,22 +135,43 @@ class Lister:
         listing_title_input = self.driver.find_element(By.XPATH, self.LISTING_TITLE_XPATH)
         listing_title_input.send_keys(listing_title)
     
-    def _enter_listing_description(self, listing_description, listing_material, listing_style, cm_addl_sizing_info, inch_addl_sizing_info):
+    def _enter_listing_description(self, listing_description_title, listing_accessory, listing_serial_number, listing_exterior, listing_inside, listing_pockets, listing_policy, listing_material, listing_style, cm_addl_sizing_info, inch_addl_sizing_info, listing_corners):
         description_input = self.driver.find_element(By.XPATH, self.LISTING_DESCRIPTION_XPATH)
 
-        full_description = listing_description
+        full_description = ''
 
-        if listing_material:
-            full_description += ('\n' + f"Material / Blend: {listing_material}")
-
-        if listing_style:
-            full_description += ('\n' + '\n' + f"Style: {listing_style}")
+        if listing_description_title:
+            full_description += ('\n' + f"{listing_description_title}")
 
         if cm_addl_sizing_info:
-            full_description += ('\n' + '\n' + f"Add'l Sizing Info (CM): {cm_addl_sizing_info}")
+            full_description += ('\n' + '\n' + f"Sizing Info (cm): {cm_addl_sizing_info}")
 
         if inch_addl_sizing_info:
-            full_description += ('\n' + '\n' + f"Add'l Sizing Info (INCH): {inch_addl_sizing_info}")
+            full_description += ('\n' + f"Sizing Info (inch): {inch_addl_sizing_info}")
+
+        if listing_accessory:
+            full_description += ('\n' + '\n' + f"Accessories: {listing_accessory}")
+
+        if listing_serial_number:
+            full_description += ('\n' + '\n' + f"Serial Number: {listing_serial_number}")
+
+        if listing_material:
+            full_description += ('\n' + '\n' + f"Material / Blend: {listing_material}")
+
+        if listing_exterior:
+            full_description += ('\n' + '\n' + f"Exterior: {listing_exterior}")
+
+        if listing_inside:
+            full_description += ('\n' + '\n' + f"Inside: {listing_inside}")
+
+        if listing_pockets:
+            full_description += ('\n' + '\n' + f"Pockets: {listing_pockets}")
+
+        if listing_corners:
+            full_description += ('\n' + '\n' + f"Corners: {listing_corners}")
+
+        if listing_policy:
+            full_description += ('\n' + '\n' + f"Policy: {listing_policy}")
 
         description_input.send_keys(full_description)
 
@@ -230,6 +254,7 @@ class Lister:
 
     def _select_color_from_dropdown(self, color_dropdown_element, color_text):
         """Component/utility method of '_enter_color()'"""
+        color_text = str.title(color_text)
         print(f"Looking for color: {color_text} in color dropdown...")
         color_dict = {
             'Red' : 0,
@@ -377,19 +402,26 @@ class Lister:
 
         print(f"Creating Listing for inventory with ID: {listing_id}...")
 
-        listing_title = listing[self.LISTING_TITLE_INDEX]
-        listing_description = ''
+        listing_title = listing[self.TITLE_INDEX]
+        listing_description_title = listing[self.DESC_TITLE_INDEX]
+        listing_accessory = listing[self.ACCESSORY_INDEX]
+        listing_serial_number  = listing[self.SERIAL_NUMBER_INDEX]
+        listing_exterior = listing[self.EXTERIOR_INDEX]
+        listing_inside = listing[self.INSIDE_INDEX]
+        listing_pockets = listing[self.POCKETS_INDEX]
+        listing_corners = listing[self.CORNERS_INDEX]
+        listing_policy = listing[self.POLICY_INDEX]
         listing_category_path = listing[self.CATEGORY_PATH_INDEX]
         listing_brand = listing[self.BRAND_INDEX]
         color_string = listing[self.COLOR_INDEX]
-        listing_original_price = listing[self.ORIGINAL_PRICE_INDEX]
-        new_listing_price = listing[self.NEW_LISTING_PRICE_INDEX]
+        listing_original_price = listing[self.PRICE_INDEX]
+        new_listing_price = listing[self.PRICE_INDEX]
         listing_material = listing[self.MATERIAL_INDEX]
         listing_style = listing[self.STYLE_INDEX]
         cm_addl_sizing_info = listing[self.CM_ADDL_SIZING_INFO_INDEX]
         inch_addl_sizing_info = listing[self.INCH_ADDL_SIZING_INFO_INDEX]
         base_photo_path = './photos/'
-        
+
         listing_photo_path = base_photo_path + listing_id
 
         full_photo_path = os.path.abspath(listing_photo_path)
@@ -398,7 +430,7 @@ class Lister:
 
         self._enter_listing_title(listing_title)
 
-        self._enter_listing_description(listing_description, listing_material, listing_style, cm_addl_sizing_info, inch_addl_sizing_info)
+        self._enter_listing_description(listing_description_title, listing_accessory, listing_serial_number, listing_exterior, listing_inside, listing_pockets, listing_policy, listing_material, listing_style, cm_addl_sizing_info, inch_addl_sizing_info, listing_corners)
 
         self._enter_category(listing_category_path)
 
@@ -452,7 +484,7 @@ class Lister:
 if __name__ == "__main__":
     LISTING_PATH = "./poshmark_inventory.csv"
     ALLOW_MANUAL_PHOTO_ADJUST = False
-    AUTO_RUN = False
+    AUTO_RUN = True
 
     lister = Lister(LISTING_PATH, ALLOW_MANUAL_PHOTO_ADJUST, AUTO_RUN)
 
