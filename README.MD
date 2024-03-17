@@ -28,11 +28,11 @@ The PoshmarkLister script automates the process of listing items on Poshmark, a 
    .\venv\Scripts\activate   # On Windows
    ```
 
-4. **Selenium:** Install the Selenium library using `pip install selenium`.
+4. **Dependencies:** Install the dependencies
 
    ```bash
-   # Install Selenium
-   pip install selenium
+   # Install dependencies
+   pip install -r requirements.txt
    ```
 
 5. **Chrome Browser:** The script uses the Chrome browser. Ensure it is installed on your machine.
