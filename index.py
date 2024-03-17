@@ -73,6 +73,9 @@ class Lister:
     ORIGINAL_PRICE_INPUT_XPATH = "//input[@data-vv-name='originalPrice']"
     NEW_LISITING_PRICE_XPATH = "//input[@data-vv-name='listingPrice']"
 
+    ADDITIONAL_DETAILS_XPATH = '//*[@id="content"]/div/div[1]/div[2]/div[1]/div[1]/div[1]/div[2]/a'
+    ADDITIONAL_SKU_XPATH = '//*[@id="content"]/div/div[1]/div[2]/div[1]/div[1]/div[2]/div/div[2]/input[1]'
+
     NEXT_BUTTON_XPATH = "//button[@data-et-name='next']"
 
     def __init__(self, listing_csv_path, allow_manual_photo_adjustment, auto_run):
@@ -203,6 +206,14 @@ class Lister:
     def _click_next_button(self):
         next_button_element = self.driver.find_element(By.XPATH, self.NEXT_BUTTON_XPATH)
         self.driver.execute_script("arguments[0].click();", next_button_element)
+
+    def _click_show_more(self):
+        show_more_element = self.driver.find_element(By.XPATH, self.ADDITIONAL_DETAILS_XPATH)
+        self.driver.execute_script("arguments[0].click();", show_more_element)
+
+    def _enter_listing_sku(self, additional_sku):
+        listing_sku = self.driver.find_element(By.XPATH, self.ADDITIONAL_SKU_XPATH)
+        listing_sku.send_keys(additional_sku)
 
     def _match_item_in_dropdown(self, expanded_dropdown_selector, text_to_match):
         wait = WebDriverWait(self.driver, 5)
@@ -397,6 +408,44 @@ class Lister:
         list_item_button = wait.until(ec.visibility_of_element_located((By.XPATH, "//button[@data-et-name='list_item']")))
         list_item_button.click()
 
+    def _select_style_tag(self, style_tag):
+        #Click tags input box
+        tags_input_box = self.driver.find_element(By.CSS_SELECTOR, "input.br--none")
+        self.driver.execute_script("arguments[0].click();", tags_input_box)
+
+        #Slow this down to allow site to correctly autoguess in position 0
+        for char in style_tag:
+            tags_input_box.send_keys(char)
+            time.sleep(0.1)
+
+        time.sleep(1)
+
+        wait = WebDriverWait(self.driver, 10)
+        dropdown = wait.until(ec.visibility_of_element_located((By.CSS_SELECTOR, ".dropdown__menu--expanded")))
+
+        all_list_items = dropdown.find_elements(By.XPATH, ".//li[@class='dropdown__menu__item']")
+
+        if len(all_list_items) > 1:
+            print(f"DEBUG: Number of results in dropdown: {len(all_list_items)}")
+            print("Grabbing text...")
+            for item_index, l_item in enumerate(all_list_items):
+                print(l_item.text)
+
+                if style_tag in l_item.text:
+                    matched_item = all_list_items[item_index]
+                    break
+
+        else:
+           matched_item = all_list_items[0]
+
+        matched_item.click()    
+
+    def _enter_style_tags(self, style_tags_string):
+        split_tags = style_tags_string.split(';')
+
+        for tag in split_tags:
+            self._select_style_tag(tag)
+
     def _make_individual_listing(self, listing):
         listing_id = listing[self.LISTING_ID_INDEX]
 
@@ -438,7 +487,13 @@ class Lister:
 
         self._enter_color(color_string)
 
+        self._enter_style_tags("Luxury;Vintage;Casual")
+
         self._enter_prices(listing_original_price, new_listing_price)
+
+        self._click_show_more()
+
+        self._enter_listing_sku(listing_id)
 
         if self.auto_run:
             user_in = input("PRESS ENTER IF THERE ARE NO ISSUES")
